@@ -67,3 +67,6 @@ function App() {
 }
 
 export default App;
+
+
+// Used this example: https://medium.com/@dhanushkatharindu99/simple-todo-app-with-react-and-typescript-77da1189dc18
