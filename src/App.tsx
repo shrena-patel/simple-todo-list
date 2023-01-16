@@ -1,24 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
+import {
+  List,
+  ListItem,
+  ListIcon,
+  Input,
+  Button,
+  Heading
+} from '@chakra-ui/react'
 import './App.css';
 
+type Todo = {
+  id: number,
+  task: string,
+  isCompleted: boolean;
+}
+
 function App() {
+
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [task, setTask] = useState<string>("")
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTask(e.target.value)
+  }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const todo: Todo = {
+      id: Date.now(),
+      task: task,
+      isCompleted: false
+    }
+
+    setTodos([todo, ...todos])
+    setTask("done")
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Heading className="heading" as='h3' size='xl' color='teal'>
+          Todos
+      </Heading>
+      <form onSubmit={handleFormSubmit}>
+        <Input type="text" name="task" placeholder='Enter a todo' size='lg' onChange={handleInput}/>
+       
+        {/* <button >Submit</button> */}
+        <Button className="submitButton" type="submit" colorScheme='teal'>Submit</Button>
+      </form>
+
+      <List spacing={3}>
+        {todos.map((oneTodo) => {
+          return (
+            <>
+              <ListItem key={`${oneTodo.id}${oneTodo.task}`}>
+                <ListIcon as={CheckCircleIcon} color='teal.500' />
+                  {oneTodo.task}
+              </ListItem>
+            </>
+          )
+        })}
+      </List>
     </div>
   );
 }
